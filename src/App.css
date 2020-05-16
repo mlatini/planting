@@ -1,38 +1,112 @@
-.App {
+/* .color-pallete { */
+/*   https://colorhunt.co/palette/180665 */
+/*   #F6F578; */
+/*   #F6D743; */
+/*   #649D66; */
+/*   #06623B; */
+/* } */
+
+.app {
+  
+}
+
+body {
+  background-color: white;
+}
+
+.card {
+  background-color: gray;
+  border: thin solid;
+  display: inline-block;
+  width: 200px;
+  margin: .5em; 
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: .2em;
+}
+
+.details-top {
+  background-color: lightgray;
+  border: thin solid;
+  /* display: inline-block; */
+  /* width: 200px; */
+  margin: .5em; 
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: .2em;
+}
+
+.details-top-card {
+  background-color: lightgray;
+  /* border: thin solid; */
+  display: inline-block;
+  /* width: 200px; */
+  height: 100%;
+  margin: .5em; 
+  /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); */
+  transition: 0.3s;
+  border-radius: .2em;
+}
+
+.image-card {
+  background-color: lightgray;
+  /* border: thin solid; */
+  /* display: inline-block; */
+  width: 300px;
+  margin: .5em; 
+  /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); */
+  transition: 0.3s;
+  border-radius: .2em;
+  /* overflow: hidden; */
+}
+
+.details-section {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 1px;
+}
+
+.details-attribute-cards {
+  background-color: lightgray;
+  border: thin solid;
+  /* display: inline-block; */
+  /* width: 200px; */
+  /* height: 100px; */
+  margin: .5em; 
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: .2em;
+}
+
+.details-section-top {
+  font-size: 1em;
   text-align: center;
+  padding: .5em;
+  ;
+}
+.details-section-middle {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  padding: .5em;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.details-section-bottom {
+  font-size: 1em;
+  text-align: center;
+  padding: .5em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.crop-image {
+  width: 100%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.large-image {
+  width: 100%;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.card-name {
+	display: block;
+	color: white;
+	background-color: gray;
 }
