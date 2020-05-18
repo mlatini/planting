@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import cropData from '../crops.json';
+import { capitalizeFirstLetter } from '../utils';
 
 const Details = () => {
   const { id, slug } = useParams();
@@ -81,7 +82,7 @@ const Details = () => {
       <h1>Details</h1>
       <div className="details-top">
         <div className="details-top-card">
-          <h1>{crop.name}</h1>
+          <h1>{capitalizeFirstLetter(crop.name)}</h1>
             <em>
               {crop.scientific_names.length >= 1 ? crop.scientific_names.map(sci => ' ' + sci.name + ' ') : '' }
             </em>

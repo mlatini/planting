@@ -1,10 +1,10 @@
-/* .color-pallete { */
-/*   https://colorhunt.co/palette/180665 */
-/*   #F6F578; */
-/*   #F6D743; */
-/*   #649D66; */
-/*   #06623B; */
-/* } */
+/* .color-pallete { 
+   https://colorhunt.co/palette/180665 
+   #F6F578
+   #F6D743
+   #649D66 
+   #06623B 
+ */
 
 .app {
   
@@ -12,17 +12,157 @@
 
 body {
   background-color: white;
+  margin: 0;
 }
 
-.card {
-  background-color: gray;
+.top-nav {
   border: thin solid;
+  background-color: #2B2D2F;
+  margin-bottom: .1em;
+  position: relative;
+}
+
+.top-nav ul {
+  list-style: none;
+}
+
+.top-nav li {
   display: inline-block;
-  width: 200px;
+}
+
+.top-nav a {
+  padding: .5em;
+  margin: .2em;
+  border: thin solid;
+  background-color: #06623B;
+  color: white;
+  text-decoration: none;
+}
+
+.top-nav a:hover {
+  background-color: #649D66;
+}
+
+.top-nav-left-image {
+  color: #F6F578;
+  font-size: 4em;
+  display: inline-block;
+}
+
+.top-nav-left-app-name {
+  color: white;
+  display: inline-block;
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  left: 70px;
+  font-size: 2em;
+}
+
+.top-nav-links {
+  display: inline-block;
+  position: absolute;
+  top: 46%;
+  left: 240px;
+  transform: translateY(-50%);
+
+}
+
+.image-card {
+  background-color: lightgray;
+  /* border: thin solid; */
+  /* display: inline-block; */
+  width: 300px;
   margin: .5em; 
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); */
   transition: 0.3s;
   border-radius: .2em;
+  /* overflow: hidden; */
+}
+
+.planting-card {
+  margin: .5em;
+}
+
+.planting-card-header {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  background-color: #649D66;
+  color: white;
+  text-align: center;
+}
+
+.planting-card-header-left {
+  text-align: left;
+  padding-left: .5em;
+}
+
+.plant-name {
+  font-size: 2em;
+}
+
+.scientific-name {
+  font-style: italic;
+  font-size: 1.5em;
+}
+
+.planting-card-header-right {
+  text-align: right;
+}
+
+.planting-card-body {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  
+}
+
+.planting-card-attribute {
+  text-align: left;
+  padding: .5em;
+}
+
+.planting-card-attribute-key {
+  font-size: 1.2em;
+  font-weight: bold;
+  padding-bottom: .2em;
+}
+
+.planting-card-attribute-value {
+  font-size: 1em;
+}
+      
+.garden-wrapper {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 1em;
+  max-width: 1920px;
+}
+
+.garden-left-header, 
+.plantings-header,
+.harvests-header,
+.crops-header {
+  border-bottom: thin solid #DCDCDC;
+  text-align: center;
+  margin-bottom: 1em; 
+}
+
+.garden-left-header h1,
+.plantings-header h1,
+.harvests-header h1{
+  display: inline-block;
+}
+
+.garden-left-image, 
+.plantings-header-image,
+.harvests-header-image {
+  color: #06623B;
+  font-size: 4em;
+  display: inline-block;
+}
+
+.planting-card {
+  border: thin solid;
 }
 
 .details-top {
@@ -48,17 +188,6 @@ body {
   border-radius: .2em;
 }
 
-.image-card {
-  background-color: lightgray;
-  /* border: thin solid; */
-  /* display: inline-block; */
-  width: 300px;
-  margin: .5em; 
-  /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); */
-  transition: 0.3s;
-  border-radius: .2em;
-  /* overflow: hidden; */
-}
 
 .details-section {
   display: grid;
@@ -66,16 +195,18 @@ body {
   grid-gap: 1px;
 }
 
-.details-attribute-cards {
+.details-attribute-cards,
+.planting-card {
   background-color: lightgray;
   border: thin solid;
-  /* display: inline-block; */
-  /* width: 200px; */
-  /* height: 100px; */
-  margin: .5em; 
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   border-radius: .2em;
+}
+
+.details-attribute-cards {
+  margin: .5em; 
+  
 }
 
 .details-section-top {
@@ -99,14 +230,46 @@ body {
 
 .crop-image {
   width: 100%;
+  /* width: 100%; */
 }
 
 .large-image {
-  width: 100%;
+  /* width: 100%; */
 }
 
-.card-name {
+.small-image {
+  width: 5em;
+  height: 5em;
+}
+
+.card {
+  /* background-color: gray; */
+  border: thin solid;
+  display: inline-block;
+  width: 15.7em;
+  height: 17em;
+  margin: .5em; 
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: .2em;
+  overflow: hidden;
+}
+
+.card-header {
 	display: block;
-	color: white;
-	background-color: gray;
+  background-color: #649D66;
+  color: white;
+  font-size: 1.5em;
+  text-align: center;
+  padding: .1em;
+  height: 1em;
+}
+
+.card-image {
+  height: 14em;
+  width: 20em;
+}
+
+.card-buttons {
+
 }
