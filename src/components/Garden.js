@@ -4,7 +4,7 @@ import PlantingCard from './PlantingCard';
 import { FaTractor } from 'react-icons/fa';
 import { GiFlowerPot, GiSunflower, GiFlowers } from 'react-icons/gi'
 
-const Garden = ({ crops, plantings, addToPlantings = f => f }) => {
+const Garden = ({ crops, plantings, addToPlantings = f => f, removeFromGardenClick = f => f }) => {
   console.log('crops', crops);
   return (
     <div className="garden-wrapper">
@@ -26,6 +26,7 @@ const Garden = ({ crops, plantings, addToPlantings = f => f }) => {
                 {...crop}
                 key={crop.id}
                 onAddToPlantingsClick={addToPlantings}
+                onRemoveFromGardenClick={removeFromGardenClick}
               />
             ))
           )}

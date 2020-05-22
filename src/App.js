@@ -81,6 +81,10 @@ function App () {
     setPlantings([...plantings, crops.find(crop => crop.id === id)]);
   };
 
+  const removeFromGarden = (growStuffId) => {
+    console.log('removeFromGarden', growStuffId);
+  };
+
   return (
     <Switch>
       <div className="app">
@@ -103,11 +107,19 @@ function App () {
           </nav>
         </header>
         <Route path='/garden'>
-          <Garden crops={gardenCrops} plantings={plantings} addToPlantings={addToPlantings}/>
+          <Garden 
+            crops={gardenCrops} 
+            plantings={plantings}
+            addToPlantings={addToPlantings}
+            removeFromGardenClick={removeFromGarden}/>
         </Route>
         <Route path='/crops'>
-          <Crops crops={crops} addToGarden={addToGarden} addToPlantings={addToPlantings} />
-      console.log('response', response);
+          <Crops 
+            crops={crops}
+            addToGarden={addToGarden}
+            addToPlantings={addToPlantings}
+            removeFromGardenClick={removeFromGarden}/>
+          />
         </Route>
         <Route exact path='/details/:id/:slug'>
           <Details />

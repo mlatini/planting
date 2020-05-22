@@ -1,7 +1,12 @@
 import React from 'react';
 import Crop from './Crop';
 
-const Crops = ({ crops, addToGarden = f => f, addToPlantings = f => f }) => {
+const Crops = ({
+  crops,
+  addToGarden = f => f,
+  removeFromGardenClick = f => f,
+  addToPlantings = f => f
+}) => {
   console.log('crops', crops);
 
   return (
@@ -18,6 +23,7 @@ const Crops = ({ crops, addToGarden = f => f, addToPlantings = f => f }) => {
               {...crop}
               key={crop.id}
               onAddToGardenClick={addToGarden}
+              onRemoveFromGardenClick={removeFromGardenClick}
               onAddToPlantingsClick={addToPlantings}
               // onDetailsClick={showDetails}
             />

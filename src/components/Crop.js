@@ -8,6 +8,7 @@ const Crop = ({
   name, slug,
   localCrop: { inGarden },
   onAddToGardenClick = f => f,
+  onRemoveFromGardenClick = f => f,
   onDetailsClick = f => f,
   onAddToPlantingsClick = f => f,
 }) => {
@@ -20,11 +21,6 @@ const Crop = ({
     });
   };
 
-  const addToGardenClick = (id) => {
-    console.log('addToGarden', id);
-    onAddToGardenClick(id);
-  };
-
   return (
     <section className="card">
       <span className="card-header">
@@ -35,17 +31,19 @@ const Crop = ({
       </div>
       <div className="card-buttons">
         {inGarden ? (
-          <span></span>
+          <span>
+            <button onClick={() => onRemoveFromGardenClick(id)}>Remove from garden</button>
+          </span>
         ) : (
           <span>
-            <button onClick={() => addToGardenClick(id)}>Add to my garden</button>
+            <button onClick={() => onAddToGardenClick(id)}>Add to my garden</button>
           </span>
         )}
         <span>
           <button onClick={showDetails}>Details</button>
         </span>
         <span>
-          <button onClick={() => onAddToPlantingsClick(id)}>Plant me!</button>
+          <button onClick={() => onAddToPlantingsClick(id)}>Plant</button>
         </span>
         {/* <button onClick={() => onDetailsClick(id)}>Details</button> */}
       </div>
