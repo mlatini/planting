@@ -29,8 +29,6 @@ const Details = () => {
     // setLoading(true);
     // setCrop(cropData.find(crop => crop.slug === slug));
     // setLoading(false);
-
-    
   }, []);
 
   useEffect(() => {

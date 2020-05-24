@@ -1,11 +1,12 @@
 import React from 'react';
 import Crop from './Crop';
+import PropTypes from 'prop-types';
 
 const Crops = ({
   crops,
   addToGarden = f => f,
   removeFromGardenClick = f => f,
-  addToPlantings = f => f
+  addToPlantings = f => f,
 }) => {
   console.log('crops', crops);
 
@@ -32,5 +33,11 @@ const Crops = ({
       </div>
     </section>
   );
+};
+Crops.propTypes = {
+  crops: PropTypes.object,
+  addToGarden: PropTypes.func,
+  removeFromGardenClick: PropTypes.func,
+  addToPlantings: PropTypes.func,
 };
 export default Crops;

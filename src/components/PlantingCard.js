@@ -1,8 +1,18 @@
 import React from 'react';
 import { capitalizeFirstLetter } from '../utils';
+import PropTypes from 'prop-types';
 
-const PlantingCard = ({ plantingDate, name, soilType, thumbnail_url, source, cost,
-  expectedGerminationDate, scientific_name, locationInGarden }) => {
+const PlantingCard = ({ 
+  plantingDate,
+  name,
+  soilType,
+  thumbnail_url,
+  source,
+  cost,
+  expectedGerminationDate,
+  scientific_name,
+  locationInGarden 
+}) => {
   return (
     <section className="planting-card">
       <div className="planting-card-header">
@@ -67,12 +77,23 @@ const PlantingCard = ({ plantingDate, name, soilType, thumbnail_url, source, cos
             Location in garden
           </div>
           <div className="platning-card-attribute-value">
-           {locationInGarden}
+            {locationInGarden}
           </div>
         </div>
       </div>
 
     </section>
   );
+};
+PlantingCard.propTypes = {
+  plantingDate: PropTypes.number,
+  name: PropTypes.string,
+  soilType: PropTypes.string,
+  thumbnail_url: PropTypes.string,
+  source: PropTypes.string,
+  cost: PropTypes.number,
+  expectedGerminationDate: PropTypes.number,
+  scientific_name: PropTypes.string,
+  locationInGarden: PropTypes.string,
 };
 export default PlantingCard;
