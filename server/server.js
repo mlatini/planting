@@ -24,19 +24,31 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/crops', (req, res) => {
-  Crop.find((err, crops) => {
+  // Return local info from the mongo db and also return growstuff data from the growstuff api in
+  // an object named growstuffData.
+  // TODO; Also add trefle or others to the results. 
+  //
+  // local crops from the mongo db
+  Crop.find((err, localCrops) => {
     if (!err) {
     // growstuff api version 0
     fetch('http://growstuff.org/crops.json')
       .then(response => response.json())
         // .then(data => res.json({ crops: crops, growstuffCrops: data }))
-        .then(growstuffCrops => res.json(growstuffCrops.map((growstuffCrop) => (
-          {
-            localCrop: crops.find((crop => crop.growstuffId === growstuffCrop._id)) || {},
-            openfarm_data: growstuffCrop.openfarm_data || {},
-            growstuffData: { ...growstuffCrop }, 
-          }
-        ))))
+        .then(growstuffCrops => res.json(growstuffCrops.map((growstuffCrop) => { 
+         const localCrop = localCrops.find(localCrop => localCrop.growstuffId === growstuffCrop._id) || [];
+          return (
+            {
+              // localCrop: localCrops.find((localCrop => localCrop.growstuffId === growstuffCrop._id)) || {},
+              id: localCrop._id,
+              growstuffId: localCrop.growstuffId,
+              inGarden: localCrop.inGarden,
+              slug: localCrop.slug,
+              openfarm_data: growstuffCrop.openfarm_data || {},
+              growstuffData: { ...growstuffCrop },
+            }
+          )
+    })))
         // .then(data => console.log('data', data))
       .catch(err => console.error(err));
       //
@@ -60,7 +72,7 @@ app.post('/api/crop', (req, res) => {
       const url = `http://growstuff.org/crops/${crop.slug}.json`;
       fetch(url)
         .then(response => response.json())
-        .then(data => res.json({ localCrop: crop, growstuffData: { ...data } }))
+        .then(data => res.json({ crop, growstuffData: { ...data } }))
         .catch(err => console.log('error in api', err));
     } else {
       console.log('error saving crop to database in /api/crop', err);

@@ -4,10 +4,10 @@ import { capitalizeFirstLetter } from '../utils';
 
 const Crop = ({
   growstuffData: { id },
-  growstuffData: { thumbnail_url} ,
-  growstuffData: { name }, 
+  growstuffData: { thumbnail_url},
+  growstuffData: { name },
   growstuffData: { slug },
-  localCrop: { inGarden },
+  inGarden,
   onAddToGardenClick = f => f,
   onRemoveFromGardenClick = f => f,
   onDetailsClick = f => f,
