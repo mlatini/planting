@@ -3,9 +3,10 @@ import { useHistory } from 'react-router-dom';
 import { capitalizeFirstLetter } from '../utils';
 
 const Crop = ({
-  id,
-  thumbnail_url,
-  name, slug,
+  growstuffData: { id },
+  growstuffData: { thumbnail_url} ,
+  growstuffData: { name }, 
+  growstuffData: { slug },
   localCrop: { inGarden },
   onAddToGardenClick = f => f,
   onRemoveFromGardenClick = f => f,

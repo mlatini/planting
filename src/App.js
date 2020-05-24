@@ -6,7 +6,7 @@ import Crops from './components/Crops';
 import Details from './components/Details';
 import Garden from './components/Garden';
 import { Switch, Route, Link } from 'react-router-dom';
-import { GiSunflower } from 'react-icons/gi'
+import { GiSunflower } from 'react-icons/gi';
 
 function App () {
   const [crops, setCrops] = useState([]);
@@ -47,21 +47,20 @@ function App () {
     }
   };
 
-  const addToGarden = (growStuffId) => {
+  const addToGarden = (growstuffId) => {
     // Save the crop to the database with the inGarden state updated/added
     saveCrop({
-      growStuffId: growStuffId,
+      growstuffId: growstuffId,
       inGarden: true,
-      slug: crops.find(crop => crop.id === growStuffId).slug,
+      slug: crops.find(crop => crop.growstuffData.id === growstuffId).growstuffData.slug,
     })
     // Update the changed crop in crops to reflect the inGarden state from the database save.
       .then(response => {
         setCrops(crops.map(crop => (
-          // There's some inconsistancy in the type of the id field in growStuff api.
+          // There's some inconsistancy in the type of the id field in growstuff api.
           // In this case the returned id in response.data.id is a number but crop.id is a string
-          // Therefore I'm using == instead of ===
-          // eslint-disable-next-line
-          parseInt(crop.id, 10) === parseInt(response.data.id, 10) 
+          // Therefore I'm using parseInt to do a comparison 
+          parseInt(crop.growstuffData.id, 10) === parseInt(response.data.growstuffData.id, 10) 
             ? { ...crop, localCrop: response.data.localCrop }
             : { ...crop }
         )));
@@ -69,7 +68,7 @@ function App () {
         setGardenCrops([
           ...gardenCrops,
           {
-            ...crops.find(crop => crop.id === growStuffId),
+            ...crops.find(crop => crop.growstuffData.id === growstuffId),
             localCrop: response.data.localCrop,
           },
         ]);
@@ -81,8 +80,8 @@ function App () {
     setPlantings([...plantings, crops.find(crop => crop.id === id)]);
   };
 
-  const removeFromGarden = (growStuffId) => {
-    console.log('removeFromGarden', growStuffId);
+  const removeFromGarden = (growstuffId) => {
+    console.log('removeFromGarden', growstuffId);
   };
 
   return (

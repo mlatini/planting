@@ -29,12 +29,12 @@ app.get('/api/crops', (req, res) => {
     // growstuff api version 0
     fetch('http://growstuff.org/crops.json')
       .then(response => response.json())
-        // .then(data => res.json({ crops: crops, growStuffCrops: data }))
-        .then(growStuffCrops => res.json(growStuffCrops.map((growStuffCrop) => (
+        // .then(data => res.json({ crops: crops, growstuffCrops: data }))
+        .then(growstuffCrops => res.json(growstuffCrops.map((growstuffCrop) => (
           {
-            localCrop: crops.find((crop => crop.growStuffId === growStuffCrop._id)) || {},
-            openfarm_data: growStuffCrop.openfarm_data || {},
-            ...growStuffCrop,
+            localCrop: crops.find((crop => crop.growstuffId === growstuffCrop._id)) || {},
+            openfarm_data: growstuffCrop.openfarm_data || {},
+            growstuffData: { ...growstuffCrop }, 
           }
         ))))
         // .then(data => console.log('data', data))
@@ -49,7 +49,7 @@ app.get('/api/crops', (req, res) => {
 
 app.post('/api/crop', (req, res) => {
   const cropToSave = new Crop({
-    growStuffId: req.body.data.growStuffId,
+    growstuffId: req.body.data.growstuffId,
     inGarden: req.body.data.inGarden,
     slug: req.body.data.slug,
   });
@@ -60,7 +60,7 @@ app.post('/api/crop', (req, res) => {
       const url = `http://growstuff.org/crops/${crop.slug}.json`;
       fetch(url)
         .then(response => response.json())
-        .then(data => res.json({ localCrop: crop, ...data }))
+        .then(data => res.json({ localCrop: crop, growstuffData: { ...data } }))
         .catch(err => console.log('error in api', err));
     } else {
       console.log('error saving crop to database in /api/crop', err);
