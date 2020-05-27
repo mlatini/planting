@@ -22,7 +22,7 @@ const Crops = ({
           crops.map((crop) => (
             <Crop
               {...crop}
-              key={crop.id}
+              key={crop.id !== '' ? crop.id : crop.growstuffData.id}
               onAddToGardenClick={addToGarden}
               onRemoveFromGardenClick={removeFromGardenClick}
               onAddToPlantingsClick={addToPlantings}
@@ -35,7 +35,7 @@ const Crops = ({
   );
 };
 Crops.propTypes = {
-  crops: PropTypes.object,
+  crops: PropTypes.array,
   addToGarden: PropTypes.func,
   removeFromGardenClick: PropTypes.func,
   addToPlantings: PropTypes.func,

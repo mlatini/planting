@@ -35,7 +35,7 @@ const Crop = ({
       <div className="card-buttons">
         {inGarden ? (
           <span>
-            <button onClick={() => onRemoveFromGardenClick(growstuffId)}>Remove from garden</button>
+            <button onClick={() => onRemoveFromGardenClick(localId)}>Remove from garden</button>
           </span>
         ) : (
           <span>
@@ -54,7 +54,7 @@ const Crop = ({
   );
 };
 Crop.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
   inGarden: PropTypes.bool,
   onAddToGardenClick: PropTypes.func,
   onRemoveFromGardenClick: PropTypes.func,
