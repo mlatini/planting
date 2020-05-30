@@ -68,11 +68,15 @@ function App () {
       // .then(response => console.log('response', response.data));
       // Update changed crop locally,in crops, to reflect the inGarden state from the database save.
       .then(response => {
-        setCrops(crops.map(crop => (
-          response.data.crop._id === crop._id
-            ? { ...crop, ...response.data.crop }
-            : { ...crop }
-        )));
+        setCrops(crops.map(crop => {
+          console.log('crop', crop);
+          console.log('response.data', response.data);
+          return (
+            response.data.crop._id === crop._id
+              ? { ...crop, ...response.data.crop }
+              : { ...crop }
+            )
+        }));
         // Update gardenCrops
         setGardenCrops(gardenCrops.filter(gardenCrop => {
           return (
