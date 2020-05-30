@@ -70,18 +70,24 @@ function App () {
       .then(response => {
         console.log('response', response);
         setCrops(crops.map(crop => (
-          response.data.crop._id === localId
+          response.data.crop._id === crop._id
             ? { ...crop, ...response.data.crop }
             : { ...crop }
         )));
         // Update gardenCrops
-        setGardenCrops(gardenCrops.filter(gardenCrop => gardenCrop.id !== response.data.crop._id)
-        );
+        setGardenCrops(gardenCrops.filter(gardenCrop =>  {
+          console.log('gardencrop id', gardenCrop._id);
+          console.log('crop._id', response.data.crop._id);
+          return (
+            gardenCrop._id !== response.data.crop._id
+          )
+        }))
       });
   };
 
   const addToGarden = (growstuffId) => {
     // Save the crop to the database with the inGarden state updated/added
+    // const existingLocalCrop = checkForExistingCrop(
     saveCrop({
       growstuffId: growstuffId,
       inGarden: true,
