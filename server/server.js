@@ -24,20 +24,16 @@ app.get('/', (req, res) => {
 
 app.get('/api/crop/:id', (req, res) => {
   console.log('api/crop/:id', req.params.id);
-});
-
-app.put('/api/crop/', (req, res) => {
-  console.log('api/crop/:crop put', req.body);
-  // Return the updated crop and create new crop is existing crop is not found.
-  const options = { new: true, upsert: true };
-  // const options = { new: true};
-  const id = req.body.crop.id;
-  const inGarden = req.body.crop.inGarden;
-  
-  Crop.findByIdAndUpdate(id, { inGarden: inGarden }, options, (err, crop) => {
-    console.log('crop', crop);
-    err ? console.error(err) : res.json({ crop });
-  });
+  if (req.params.id) {
+    Crop.findById(req.params.id, (err, crop) => {
+      console.log('crop', crop);
+      if (!err && crop) {
+        res.json(crop);
+      } else {
+        res.send(null);
+      }
+    });
+  }
 });
 
 app.get('/api/crops', (req, res) => {
@@ -106,5 +102,28 @@ app.post('/api/crop', (req, res) => {
     }
   });
 });
+
+app.put('/api/crop/', (req, res) => {
+  console.log('api/crop/:crop put', req.body);
+  // Return the updated crop and create new crop is existing crop is not found.
+  const options = { new: true, upsert: true };
+  // const options = { new: true};
+  const id = req.body.crop.id;
+  const inGarden = req.body.crop.inGarden;
+
+  Crop.findByIdAndUpdate(id, { inGarden: inGarden }, options, (err, crop) => {
+    if (!err) {
+      // Return the saved crop, along with the attached data from growstuff.
+      const url = `http://growstuff.org/crops/${crop.slug}.json`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => res.json({ crop, growstuffData: { ...data } }))
+        .catch(err => console.log('error in api', err));
+    } else {
+      console.log('error saving crop to database in /api/crop', err);
+    }
+  });
+});
+
 
 app.listen(port, () => console.log(`Express listening on port ${port}`));

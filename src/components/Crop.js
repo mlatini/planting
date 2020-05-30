@@ -39,7 +39,7 @@ const Crop = ({
           </span>
         ) : (
           <span>
-            <button onClick={() => onAddToGardenClick(growstuffId)}>Add to my garden</button>
+            <button onClick={() => onAddToGardenClick({ growstuffId, localId })}>Add to my garden</button>
           </span>
         )}
         <span>

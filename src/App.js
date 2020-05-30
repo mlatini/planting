@@ -68,40 +68,57 @@ function App () {
       // .then(response => console.log('response', response.data));
       // Update changed crop locally,in crops, to reflect the inGarden state from the database save.
       .then(response => {
-        console.log('response', response);
         setCrops(crops.map(crop => (
           response.data.crop._id === crop._id
             ? { ...crop, ...response.data.crop }
             : { ...crop }
         )));
         // Update gardenCrops
-        setGardenCrops(gardenCrops.filter(gardenCrop =>  {
-          console.log('gardencrop id', gardenCrop._id);
-          console.log('crop._id', response.data.crop._id);
+        setGardenCrops(gardenCrops.filter(gardenCrop => {
           return (
             gardenCrop._id !== response.data.crop._id
-          )
-        }))
+          );
+        }));
       });
   };
 
-  const addToGarden = (growstuffId) => {
+  const existingLocalCrop = async (localId) => {
+    // Check the database for an existing crop by id. Return true if exists, false if not exists.
+    const url = `http://localhost:3001/api/crop/${localId}`;
+    const response = await axios.get(url);
+    if (response.data === '') {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const addToGarden = ({ growstuffId, localId = null }) => {
+    console.log('localId', localId);
+
     // Save the crop to the database with the inGarden state updated/added
-    // const existingLocalCrop = checkForExistingCrop(
-    saveCrop({
-      growstuffId: growstuffId,
-      inGarden: true,
-      slug: crops.find(crop => crop.growstuffData.id === growstuffId).growstuffData.slug,
-    })
-    // Update changed crop locally,in crops, to reflect the inGarden state from the database save.
+    existingLocalCrop(localId)
+      .then(response => response === true
+        ? updateCrop({
+          id: localId,
+          inGarden: true,
+        })
+        : saveCrop({
+          growstuffId: growstuffId,
+          inGarden: true,
+          slug: crops.find(crop => crop.growstuffData.id === growstuffId).growstuffData.slug,
+        })
+      )
+      // Update changed crop locally,in crops, to reflect the inGarden state from the database save.
       .then(response => {
+        console.log('response', response);
         setCrops(crops.map(crop => {
           return (
             // There's some inconsistancy in the type of the id field in growstuff api.
-            // In this case the returned id in response.data.id is a number but crop.id is a string
+            // In this case the returned id in response.data.id is a number.crop.id is a string
             // Therefore I'm using parseInt to do a comparison
             parseInt(crop.growstuffData.id, 10) === parseInt(response.data.growstuffData.id, 10)
-            ? { ...crop, ...response.data.crop, id: response.data.crop._id }
+              ? { ...crop, ...response.data.crop, id: response.data.crop._id }
               : { ...crop }
           );
         }));
