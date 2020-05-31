@@ -73,14 +73,14 @@ function App () {
           console.log('response.data', response.data);
           return (
             response.data.crop._id === crop._id
-              ? { ...crop, ...response.data.crop }
+              ? { ...crop, ...response.data.crop, id: response.data.crop._id }
               : { ...crop }
             )
         }));
         // Update gardenCrops
         setGardenCrops(gardenCrops.filter(gardenCrop => {
           return (
-            gardenCrop._id !== response.data.crop._id
+            gardenCrop.id !== response.data.crop._id
           );
         }));
       });
@@ -101,6 +101,7 @@ function App () {
     console.log('localId', localId);
 
     // Save the crop to the database with the inGarden state updated/added
+    // If there's an existing local crop, update it. If not, create a new local crop.
     existingLocalCrop(localId)
       .then(response => response === true
         ? updateCrop({
@@ -131,7 +132,7 @@ function App () {
           ...gardenCrops,
           {
             ...crops.find(crop => crop.growstuffData.id === growstuffId),
-            ...response.data.crop,
+            ...response.data.crop, id: response.data.crop._id, 
           },
         ]);
       });
