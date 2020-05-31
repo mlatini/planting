@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { capitalizeFirstLetter } from '../utils';
+import PropTypes from 'prop-types';
 
 const Crop = ({
-  id,
-  thumbnail_url,
-  name, slug,
-  localCrop: { inGarden },
+  growstuffData: { id: growstuffId },
+  growstuffData: { thumbnail_url},
+  growstuffData: { name },
+  growstuffData: { slug },
+  id: localId,
+  inGarden,
   onAddToGardenClick = f => f,
+  onRemoveFromGardenClick = f => f,
   onDetailsClick = f => f,
   onAddToPlantingsClick = f => f,
 }) => {
@@ -15,14 +19,9 @@ const Crop = ({
 
   const showDetails = () => {
     history.push({
-      // pathname: `/details/${id}`
-      pathname: `/details/${id}/${slug}`,
+      // pathname: `/details/${growstuffId}`
+      pathname: `/details/${growstuffId}/${slug}`,
     });
-  };
-
-  const addToGardenClick = (id) => {
-    console.log('addToGarden', id);
-    onAddToGardenClick(id);
   };
 
   return (
@@ -35,21 +34,31 @@ const Crop = ({
       </div>
       <div className="card-buttons">
         {inGarden ? (
-          <span></span>
+          <span>
+            <button onClick={() => onRemoveFromGardenClick(localId)}>Remove from garden</button>
+          </span>
         ) : (
           <span>
-            <button onClick={() => addToGardenClick(id)}>Add to my garden</button>
+            <button onClick={() => onAddToGardenClick({ growstuffId, localId })}>Add to my garden</button>
           </span>
         )}
         <span>
           <button onClick={showDetails}>Details</button>
         </span>
         <span>
-          <button onClick={() => onAddToPlantingsClick(id)}>Plant me!</button>
+          <button onClick={() => onAddToPlantingsClick(growstuffId)}>Plant</button>
         </span>
-        {/* <button onClick={() => onDetailsClick(id)}>Details</button> */}
+        {/* <button onClick={() => onDetailsClick(growstuffId)}>Details</button> */}
       </div>
     </section>
   );
+};
+Crop.propTypes = {
+  id: PropTypes.string,
+  inGarden: PropTypes.bool,
+  onAddToGardenClick: PropTypes.func,
+  onRemoveFromGardenClick: PropTypes.func,
+  onDetailsClick: PropTypes.func,
+  onAddToPlantingsClick: PropTypes.func,
 };
 export default Crop;

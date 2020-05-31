@@ -3,8 +3,14 @@ import Crop from './Crop';
 import PlantingCard from './PlantingCard';
 import { FaTractor } from 'react-icons/fa';
 import { GiFlowerPot, GiSunflower, GiFlowers } from 'react-icons/gi'
+import PropTypes from 'prop-types';
 
-const Garden = ({ crops, plantings, addToPlantings = f => f }) => {
+const Garden = ({
+  crops,
+  plantings,
+  addToPlantings = f => f,
+  removeFromGardenClick = f => f,
+}) => {
   console.log('crops', crops);
   return (
     <div className="garden-wrapper">
@@ -24,8 +30,9 @@ const Garden = ({ crops, plantings, addToPlantings = f => f }) => {
             crops.map((crop) => (
               <Crop
                 {...crop}
-                key={crop.id}
+                key={crop.id !== '' ? crop.id : crop.growstuffData.id}
                 onAddToPlantingsClick={addToPlantings}
+                onRemoveFromGardenClick={removeFromGardenClick}
               />
             ))
           )}
@@ -74,5 +81,11 @@ const Garden = ({ crops, plantings, addToPlantings = f => f }) => {
       </div>
     </div>
   );
+};
+Garden.propTypes = {
+  crops: PropTypes.array,
+  plantings: PropTypes.array,
+  addToPlantings: PropTypes.func,
+  removeFromGardenClick: PropTypes.func,
 };
 export default Garden;

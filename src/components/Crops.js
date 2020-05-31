@@ -1,7 +1,13 @@
 import React from 'react';
 import Crop from './Crop';
+import PropTypes from 'prop-types';
 
-const Crops = ({ crops, addToGarden = f => f, addToPlantings = f => f }) => {
+const Crops = ({
+  crops,
+  addToGarden = f => f,
+  removeFromGardenClick = f => f,
+  addToPlantings = f => f,
+}) => {
   console.log('crops', crops);
 
   return (
@@ -16,8 +22,9 @@ const Crops = ({ crops, addToGarden = f => f, addToPlantings = f => f }) => {
           crops.map((crop) => (
             <Crop
               {...crop}
-              key={crop.id}
+              key={crop.id !== '' ? crop.id : crop.growstuffData.id}
               onAddToGardenClick={addToGarden}
+              onRemoveFromGardenClick={removeFromGardenClick}
               onAddToPlantingsClick={addToPlantings}
               // onDetailsClick={showDetails}
             />
@@ -26,5 +33,11 @@ const Crops = ({ crops, addToGarden = f => f, addToPlantings = f => f }) => {
       </div>
     </section>
   );
+};
+Crops.propTypes = {
+  crops: PropTypes.array,
+  addToGarden: PropTypes.func,
+  removeFromGardenClick: PropTypes.func,
+  addToPlantings: PropTypes.func,
 };
 export default Crops;

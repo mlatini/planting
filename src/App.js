@@ -6,7 +6,7 @@ import Crops from './components/Crops';
 import Details from './components/Details';
 import Garden from './components/Garden';
 import { Switch, Route, Link } from 'react-router-dom';
-import { GiSunflower } from 'react-icons/gi'
+import { GiSunflower } from 'react-icons/gi';
 
 function App () {
   const [crops, setCrops] = useState([]);
@@ -26,7 +26,7 @@ function App () {
       .then(crops => {
         setCrops(crops);
         setGardenCrops(crops.filter((crop) => (
-          crop.localCrop.inGarden
+          crop.inGarden
         )));
       });
 
@@ -38,7 +38,6 @@ function App () {
   console.log('plantings', plantings);
 
   const saveCrop = async (crop) => {
-    console.log('crop', crop);
     try {
       const response = await axios.post('http://localhost:3001/api/crop', { data: crop });
       return response;
@@ -47,30 +46,93 @@ function App () {
     }
   };
 
-  const addToGarden = (growStuffId) => {
-    // Save the crop to the database with the inGarden state updated/added
-    saveCrop({
-      growStuffId: growStuffId,
-      inGarden: true,
-      slug: crops.find(crop => crop.id === growStuffId).slug,
+  const updateCrop = async ({ id, inGarden, slug }) => {
+    try {
+      const crop = { id, inGarden, slug };
+      console.log('crop', crop);
+      const url = `http://localhost:3001/api/crop/`;
+      console.log('url', url);
+      const response = await axios.put(url, { crop });
+      return response;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const removeFromGarden = (localId) => {
+    // Save the crop to the database with the inGarden state updated
+    updateCrop({
+      id: localId,
+      inGarden: false,
     })
-    // Update the changed crop in crops to reflect the inGarden state from the database save.
+      // .then(response => console.log('response', response.data));
+      // Update changed crop locally,in crops, to reflect the inGarden state from the database save.
       .then(response => {
-        setCrops(crops.map(crop => (
-          // There's some inconsistancy in the type of the id field in growStuff api.
-          // In this case the returned id in response.data.id is a number but crop.id is a string
-          // Therefore I'm using == instead of ===
-          // eslint-disable-next-line
-          parseInt(crop.id, 10) === parseInt(response.data.id, 10) 
-            ? { ...crop, localCrop: response.data.localCrop }
-            : { ...crop }
-        )));
+        setCrops(crops.map(crop => {
+          console.log('crop', crop);
+          console.log('response.data', response.data);
+          return (
+            response.data.crop._id === crop._id
+              ? { ...crop, ...response.data.crop, id: response.data.crop._id }
+              : { ...crop }
+            )
+        }));
+        // Update gardenCrops
+        setGardenCrops(gardenCrops.filter(gardenCrop => {
+          return (
+            gardenCrop.id !== response.data.crop._id
+          );
+        }));
+      });
+  };
+
+  const existingLocalCrop = async (localId) => {
+    // Check the database for an existing crop by id. Return true if exists, false if not exists.
+    const url = `http://localhost:3001/api/crop/${localId}`;
+    const response = await axios.get(url);
+    if (response.data === '') {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const addToGarden = ({ growstuffId, localId = null }) => {
+    console.log('localId', localId);
+
+    // Save the crop to the database with the inGarden state updated/added
+    // If there's an existing local crop, update it. If not, create a new local crop.
+    existingLocalCrop(localId)
+      .then(response => response === true
+        ? updateCrop({
+          id: localId,
+          inGarden: true,
+        })
+        : saveCrop({
+          growstuffId: growstuffId,
+          inGarden: true,
+          slug: crops.find(crop => crop.growstuffData.id === growstuffId).growstuffData.slug,
+        })
+      )
+      // Update changed crop locally,in crops, to reflect the inGarden state from the database save.
+      .then(response => {
+        console.log('response', response);
+        setCrops(crops.map(crop => {
+          return (
+            // There's some inconsistancy in the type of the id field in growstuff api.
+            // In this case the returned id in response.data.id is a number.crop.id is a string
+            // Therefore I'm using parseInt to do a comparison
+            parseInt(crop.growstuffData.id, 10) === parseInt(response.data.growstuffData.id, 10)
+              ? { ...crop, ...response.data.crop, id: response.data.crop._id }
+              : { ...crop }
+          );
+        }));
         // Add the crop to gardenCrops with the updated localCrop data from the database save
         setGardenCrops([
           ...gardenCrops,
           {
-            ...crops.find(crop => crop.id === growStuffId),
-            localCrop: response.data.localCrop,
+            ...crops.find(crop => crop.growstuffData.id === growstuffId),
+            ...response.data.crop, id: response.data.crop._id, 
           },
         ]);
       });
@@ -103,11 +165,19 @@ function App () {
           </nav>
         </header>
         <Route path='/garden'>
-          <Garden crops={gardenCrops} plantings={plantings} addToPlantings={addToPlantings}/>
+          <Garden 
+            crops={gardenCrops} 
+            plantings={plantings}
+            addToPlantings={addToPlantings}
+            removeFromGardenClick={removeFromGarden}/>
         </Route>
         <Route path='/crops'>
-          <Crops crops={crops} addToGarden={addToGarden} addToPlantings={addToPlantings} />
-      console.log('response', response);
+          <Crops 
+            crops={crops}
+            addToGarden={addToGarden}
+            addToPlantings={addToPlantings}
+            removeFromGardenClick={removeFromGarden}
+          />
         </Route>
         <Route exact path='/details/:id/:slug'>
           <Details />

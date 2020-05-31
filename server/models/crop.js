@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const cropSchema = new mongoose.Schema({
-  growStuffId: String,
+  growstuffId: String,
   inGarden: Boolean,
   slug: String,
 });

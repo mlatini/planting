@@ -18,7 +18,7 @@ const Details = () => {
     //   .then(crop => setCrop(crop));
     // setLoading(false);
     //
-    // growStuff api version 0 (this retrieves the most data)
+    // growstuff api version 0 (this retrieves the most data)
     setLoading(true);
     fetch(`https://cors-anywhere.herokuapp.com/https://www.growstuff.org/crops/${slug}.json`)
       .then(response => response.json())
@@ -29,8 +29,6 @@ const Details = () => {
     // setLoading(true);
     // setCrop(cropData.find(crop => crop.slug === slug));
     // setLoading(false);
-
-    
   }, []);
 
   useEffect(() => {
