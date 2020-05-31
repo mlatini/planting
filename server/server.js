@@ -26,7 +26,7 @@ app.get('/api/crop/:id', (req, res) => {
   console.log('api/crop/:id', req.params.id);
   if (req.params.id) {
     Crop.findById(req.params.id, (err, crop) => {
-      console.log('crop', crop);
+      console.log('crop in api/crop/:id', crop);
       if (!err && crop) {
         res.json(crop);
       } else {

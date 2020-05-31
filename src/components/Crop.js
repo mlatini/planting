@@ -8,7 +8,7 @@ const Crop = ({
   growstuffData: { thumbnail_url},
   growstuffData: { name },
   growstuffData: { slug },
-  id: localId,
+  _id: localId,
   inGarden,
   onAddToGardenClick = f => f,
   onRemoveFromGardenClick = f => f,
