@@ -28,4 +28,5 @@ App
 Seed / Plant - one plant card with an image and a description, which includes how to plant it
 and other stuff. This plant will have a rating. 
 
-2. adding crop to garden creates a new db entry each time.
+- Remove from garden is not not updating in all crops
+
