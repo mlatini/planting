@@ -24,6 +24,8 @@ const Crop = ({
     });
   };
 
+  console.log('localId', localId);
+
   return (
     <section className="card">
       <span className="card-header">
