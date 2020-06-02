@@ -29,4 +29,6 @@ Seed / Plant - one plant card with an image and a description, which includes ho
 and other stuff. This plant will have a rating. 
 
 - Remove from garden is not not updating in all crops
-
+  localId (id) in crop = on crops with remove from garden there is a localId
+  crops in crops = on the crop that's in the garden, the id is there.  
+  crops in app = same as line above

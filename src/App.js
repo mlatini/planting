@@ -57,6 +57,7 @@ function App () {
   };
 
   const removeFromGarden = (localId) => {
+    console.log('localId in removeFromGarden function', localId);
     // Save the crop to the database with the inGarden state updated
     updateCrop({
       id: localId,
@@ -67,7 +68,7 @@ function App () {
       .then(response => {
         setCrops(crops.map(crop => {
           return (
-            response.data.crop._id === crop._id
+            response.data.crop._id === crop.id
               ? { ...crop, ...response.data.crop, id: response.data.crop._id }
               : { ...crop }
           );
