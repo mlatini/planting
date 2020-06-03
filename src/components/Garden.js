@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 const Garden = ({
   crops,
-  plantings,
+  plantingCrops,
   addToPlantings = f => f,
   removeFromGardenClick = f => f,
 }) => {
@@ -18,7 +18,7 @@ const Garden = ({
         <div className="garden-left-header">
           <span>
             <h1>Your garden</h1>
-          </span> 
+          </span>
           <span className="garden-left-image">
             {/* <GiFlowerPot /> */}
           </span>
@@ -42,14 +42,14 @@ const Garden = ({
         <div className="plantings">
           <div className="plantings-header">
             <span>
-              <h1>{`Plantings - ${plantings.length}`}</h1>
+              <h1>{`Plantings - ${plantingCrops.length}`}</h1>
             </span>
             <span className="plantings-header-image">
               {/* <GiFlowers /> */}
             </span>
           </div>
-          {plantings.length >= 1 ? (
-            plantings.map((planting) => (
+          {plantingCrops.length >= 1 ? (
+            plantingCrops.map((planting) => (
               <PlantingCard
                 {...planting}
                 key={planting.id}
@@ -84,7 +84,7 @@ const Garden = ({
 };
 Garden.propTypes = {
   crops: PropTypes.array,
-  plantings: PropTypes.array,
+  plantingCrops: PropTypes.array,
   addToPlantings: PropTypes.func,
   removeFromGardenClick: PropTypes.func,
 };
