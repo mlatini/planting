@@ -24,8 +24,6 @@ const Crop = ({
     });
   };
 
-  console.log('localId', localId);
-
   return (
     <section className="card">
       <span className="card-header">
@@ -48,7 +46,7 @@ const Crop = ({
           <button onClick={showDetails}>Details</button>
         </span>
         <span>
-          <button onClick={() => onAddToPlantingsClick(growstuffId)}>Plant</button>
+          <button onClick={() => onAddToPlantingsClick(localId)}>Plant</button>
         </span>
         {/* <button onClick={() => onDetailsClick(growstuffId)}>Details</button> */}
       </div>

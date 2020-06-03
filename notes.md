@@ -29,5 +29,9 @@ Seed / Plant - one plant card with an image and a description, which includes ho
 and other stuff. This plant will have a rating. 
 
 - Add to plantings is not working
+<<<<<<< HEAD
 
 
+=======
+  - Renamed plantings to plantingCrops in crops.js and garden.js
+>>>>>>> tsk5

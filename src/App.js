@@ -10,7 +10,7 @@ import { GiSunflower } from 'react-icons/gi';
 function App () {
   const [crops, setCrops] = useState([]);
   const [gardenCrops, setGardenCrops] = useState([]);
-  const [plantings, setPlantings] = useState([]);
+  const [plantingCrops, setPlantingCrops] = useState([]);
 
   useEffect(() => {
     // growstuff api version 0
@@ -34,7 +34,7 @@ function App () {
 
   console.log('crops', crops);
   console.log('gardenCrops', gardenCrops);
-  console.log('plantings', plantings);
+  console.log('plantingCrops', plantingCrops);
 
   const saveCrop = async (crop) => {
     try {
@@ -133,7 +133,8 @@ function App () {
   };
 
   const addToPlantings = (id) => {
-    setPlantings([...plantings, crops.find(crop => crop.id === id)]);
+    console.log('id', id);
+    setPlantingCrops([...plantingCrops, crops.find(crop => crop.id === id)]);
   };
 
   return (
@@ -160,7 +161,7 @@ function App () {
         <Route path='/garden'>
           <Garden
             crops={gardenCrops}
-            plantings={plantings}
+            plantingCrops={plantingCrops}
             addToPlantings={addToPlantings}
             removeFromGardenClick={removeFromGarden}/>
         </Route>
