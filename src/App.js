@@ -24,12 +24,9 @@ function App () {
       // .then(crops => console.log('crops', crops));
       .then(crops => {
         setCrops(crops);
-        setGardenCrops(crops.filter((crop) => (
-          crop.inGarden
-        )));
+        setGardenCrops(crops.filter(crop => crop.inGarden));
+        setPlantingCrops(crops.filter(crop => crop.plantings.length >= 1));
       });
-
-    // setCrops(cropData);
   }, []);
 
   console.log('crops', crops);
@@ -45,9 +42,9 @@ function App () {
     }
   };
 
-  const updateCrop = async ({ id, inGarden, slug }) => {
+  const updateCrop = async ({ id, inGarden, slug, planting }) => {
     try {
-      const crop = { id, inGarden, slug };
+      const crop = { id, inGarden, slug, planting };
       const url = 'http://localhost:3001/api/crop/';
       const response = await axios.put(url, { crop });
       return response;
@@ -132,9 +129,57 @@ function App () {
       });
   };
 
-  const addToPlantings = (id) => {
-    console.log('id', id);
-    setPlantingCrops([...plantingCrops, crops.find(crop => crop.id === id)]);
+  const addToPlantings = (growstuffId, localId = null) => {
+    // Save the planting to the database.
+    // If there's an existing local crop update it. If there isn't, create a new local crop.
+    existingLocalCrop(localId) 
+      .then(response => response === true
+        ? updateCrop({
+          id: localId,
+          planting: {
+            plantingDate: new Date(),
+            soilType: '',
+            expectedGerminationDate: new Date(),
+            source: '',
+            cost: 1.25,
+            locationInGarden: '',
+          },
+        })
+        : saveCrop({
+          growstuffId: growstuffId,
+          slug: crops.find(crop => crop.growstuffData.id === growstuffId).growstuffData.slug,
+          planting: {
+            plantingDate: new Date(),
+            soilType: '',
+            expectedGerminationDate: new Date(),
+            source: '',
+            cost: 1.25,
+            locationInGarden: '',
+          },
+        })
+      )
+      // Update crop locally, in crops.
+      .then(response => {
+        console.log('response', response);
+        setCrops(crops.map(crop => {
+          return (
+            // There's some inconsistancy in the type of the id field in growstuff api.
+            // In this case the returned id in response.data.id is a number.crop.id is a string
+            // Therefore I'm using parseInt to do a comparison
+            parseInt(crop.growstuffData.id, 10) === parseInt(response.data.growstuffData.id, 10)
+              ? { ...crop, ...response.data.crop, id: response.data.crop._id }
+              : { ...crop }
+          );
+        }));
+        setPlantingCrops([
+          ...plantingCrops,
+          {
+            ...response.data.crop,
+            id: response.data.crop._id,
+            growstuffData: response.data.growstuffData,
+          },
+        ]);
+      });
   };
 
   return (

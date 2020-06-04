@@ -2,7 +2,7 @@ import React from 'react';
 import { capitalizeFirstLetter } from '../utils';
 import PropTypes from 'prop-types';
 
-const PlantingCard = ({ 
+const PlantingCard = ({
   plantingDate,
   soilType,
   expectedGerminationDate,

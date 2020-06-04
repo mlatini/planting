@@ -46,7 +46,7 @@ const Crop = ({
           <button onClick={showDetails}>Details</button>
         </span>
         <span>
-          <button onClick={() => onAddToPlantingsClick(localId)}>Plant</button>
+          <button onClick={() => onAddToPlantingsClick(growstuffId, localId)}>Plant</button>
         </span>
         {/* <button onClick={() => onDetailsClick(growstuffId)}>Details</button> */}
       </div>

@@ -28,10 +28,21 @@ App
 Seed / Plant - one plant card with an image and a description, which includes how to plant it
 and other stuff. This plant will have a rating. 
 
-- Add to plantings is not working
-<<<<<<< HEAD
+tsk6 - save plantings to db
+  - Updated crop model to contain fields from plantings as an array of plantings.
+  - added growstuffId to onAddToPlantingsClick in crop.js so I can pass it if I need to create a
+    new local crop. 
+  - updated addToPlantings function in app.js to save the updated crop to the database, along 
+    with the plancing info.
+  - updated post /api/crop in server.js to push the planting to crop if it's present. 
+  - Updated put /api/crop to use findById and update the crop instead of findByIdAndUpdate. 
+  - Added setPlantingCrops in useEffect in app.js
+  - Updated get /api/crops to return plantings from the db call. 
+  *Comitt*
 
+  Issues: 
+    - plantingCrops only has one entry per crop, which means that all the plantings for a crop 
+      don't show in plantings in the garden. Only one planting per crop. 
+    - when first adding a crop to plantings, using the 'plant' button, there is no picture shown
+      in plantings in garden. 
 
-=======
-  - Renamed plantings to plantingCrops in crops.js and garden.js
->>>>>>> tsk5
