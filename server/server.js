@@ -55,12 +55,14 @@ app.get('/api/crops', (req, res) => {
           let growstuffId = '';
           let inGarden = false;
           let slug = '';
+          let plantings = [];
 
           if (localCrop) {
             id = localCrop._id;
             growstuffId = localCrop.growstuffId;
             inGarden = localCrop.inGarden;
             slug = localCrop.slug;
+            plantings = localCrop.plantings || [];
           }
 
           return (
@@ -69,8 +71,10 @@ app.get('/api/crops', (req, res) => {
               growstuffId: growstuffId,
               inGarden: inGarden,
               slug: slug,
+              plantings: plantings,
               openfarm_data: growstuffCrop.openfarm_data || {},
               growstuffData: { ...growstuffCrop },
+
             }
           );
         })))
@@ -89,6 +93,9 @@ app.post('/api/crop', (req, res) => {
     inGarden: req.body.data.inGarden,
     slug: req.body.data.slug,
   });
+  if (req.body.data.planting) {
+    cropToSave.plantings.push(req.body.data.planting);
+  }
   cropToSave.save((err, crop) => {
     if (!err) {
       // Return the saved crop, along with the attached data from growstuff.
@@ -106,24 +113,46 @@ app.post('/api/crop', (req, res) => {
 app.put('/api/crop/', (req, res) => {
   console.log('api/crop/:crop put', req.body);
   // Return the updated crop and create new crop is existing crop is not found.
-  const options = { new: true, upsert: true };
-  // const options = { new: true};
   const id = req.body.crop.id;
   const inGarden = req.body.crop.inGarden;
+  const planting = req.body.crop.planting || undefined;
 
-  Crop.findByIdAndUpdate(id, { inGarden: inGarden }, options, (err, crop) => {
+  const updateCrop = async (crop) => {
+    const updatedCrop = await crop.save();
+    return updatedCrop;
+  };
+
+  Crop.findById(id, (err, cropToUpdate) => {
     if (!err) {
-      // Return the saved crop, along with the attached data from growstuff.
-      const url = `http://growstuff.org/crops/${crop.slug}.json`;
-      fetch(url)
-        .then(response => response.json())
-        .then(data => res.json({ crop, growstuffData: { ...data } }))
-        .catch(err => console.log('error in api', err));
+      cropToUpdate.inGarden = inGarden;
+      if (planting !== undefined) {
+        cropToUpdate.plantings.push(planting);
+      }
+      updateCrop(cropToUpdate)
+        .then(updatedCrop => {
+          // Return the saved crop, along with the attached data from growstuff.
+          const url = `http://growstuff.org/crops/${updatedCrop.slug}.json`;
+          fetch(url)
+            .then(response => response.json())
+            .then(data => res.json({
+              crop: updatedCrop,
+              growstuffData: { ...data }
+            }))
+          // return (
+          //   {
+          //     id: id,
+          //     growstuffId: growstuffId,
+          //     inGarden: inGarden,
+          //     slug: slug,
+          //     plantings: plantings,
+          //     openfarm_data: growstuffCrop.openfarm_data || {},
+          //     growstuffData: { ...growstuffCrop },
+          
+            .catch(err => console.log('error in api', err));
+        });
     } else {
       console.log('error saving crop to database in /api/crop', err);
     }
   });
 });
-
-
 app.listen(port, () => console.log(`Express listening on port ${port}`));
