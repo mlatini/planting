@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
-import cropData from './crops.json';
 import Crops from './components/Crops';
 import Details from './components/Details';
 import Garden from './components/Garden';
@@ -11,7 +10,7 @@ import { GiSunflower } from 'react-icons/gi';
 function App () {
   const [crops, setCrops] = useState([]);
   const [gardenCrops, setGardenCrops] = useState([]);
-  const [plantings, setPlantings] = useState([]);
+  const [plantingCrops, setPlantingCrops] = useState([]);
 
   useEffect(() => {
     // growstuff api version 0
@@ -35,7 +34,7 @@ function App () {
 
   console.log('crops', crops);
   console.log('gardenCrops', gardenCrops);
-  console.log('plantings', plantings);
+  console.log('plantingCrops', plantingCrops);
 
   const saveCrop = async (crop) => {
     try {
@@ -49,9 +48,7 @@ function App () {
   const updateCrop = async ({ id, inGarden, slug }) => {
     try {
       const crop = { id, inGarden, slug };
-      console.log('crop', crop);
-      const url = `http://localhost:3001/api/crop/`;
-      console.log('url', url);
+      const url = 'http://localhost:3001/api/crop/';
       const response = await axios.put(url, { crop });
       return response;
     } catch (e) {
@@ -60,6 +57,7 @@ function App () {
   };
 
   const removeFromGarden = (localId) => {
+    console.log('localId in removeFromGarden function', localId);
     // Save the crop to the database with the inGarden state updated
     updateCrop({
       id: localId,
@@ -69,13 +67,11 @@ function App () {
       // Update changed crop locally,in crops, to reflect the inGarden state from the database save.
       .then(response => {
         setCrops(crops.map(crop => {
-          console.log('crop', crop);
-          console.log('response.data', response.data);
           return (
-            response.data.crop._id === crop._id
+            response.data.crop._id === crop.id
               ? { ...crop, ...response.data.crop, id: response.data.crop._id }
               : { ...crop }
-            )
+          );
         }));
         // Update gardenCrops
         setGardenCrops(gardenCrops.filter(gardenCrop => {
@@ -98,8 +94,6 @@ function App () {
   };
 
   const addToGarden = ({ growstuffId, localId = null }) => {
-    console.log('localId', localId);
-
     // Save the crop to the database with the inGarden state updated/added
     // If there's an existing local crop, update it. If not, create a new local crop.
     existingLocalCrop(localId)
@@ -116,7 +110,6 @@ function App () {
       )
       // Update changed crop locally,in crops, to reflect the inGarden state from the database save.
       .then(response => {
-        console.log('response', response);
         setCrops(crops.map(crop => {
           return (
             // There's some inconsistancy in the type of the id field in growstuff api.
@@ -132,15 +125,16 @@ function App () {
           ...gardenCrops,
           {
             ...crops.find(crop => crop.growstuffData.id === growstuffId),
-            ...response.data.crop, id: response.data.crop._id, 
+            ...response.data.crop,
+            id: response.data.crop._id,
           },
         ]);
       });
   };
 
   const addToPlantings = (id) => {
-    console.log('addToPlantings');
-    setPlantings([...plantings, crops.find(crop => crop.id === id)]);
+    console.log('id', id);
+    setPlantingCrops([...plantingCrops, crops.find(crop => crop.id === id)]);
   };
 
   return (
@@ -165,14 +159,14 @@ function App () {
           </nav>
         </header>
         <Route path='/garden'>
-          <Garden 
-            crops={gardenCrops} 
-            plantings={plantings}
+          <Garden
+            crops={gardenCrops}
+            plantingCrops={plantingCrops}
             addToPlantings={addToPlantings}
             removeFromGardenClick={removeFromGarden}/>
         </Route>
         <Route path='/crops'>
-          <Crops 
+          <Crops
             crops={crops}
             addToGarden={addToGarden}
             addToPlantings={addToPlantings}

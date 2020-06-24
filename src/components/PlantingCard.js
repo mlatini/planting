@@ -4,15 +4,16 @@ import PropTypes from 'prop-types';
 
 const PlantingCard = ({ 
   plantingDate,
-  name,
   soilType,
-  thumbnail_url,
+  expectedGerminationDate,
   source,
   cost,
-  expectedGerminationDate,
-  scientific_name,
-  locationInGarden 
+  locationInGarden,
+  growstuffData: { name },
+  growstuffData: { thumbnail_url },
+  growstuffData: { scientific_name },
 }) => {
+  console.log('name', name);
   return (
     <section className="planting-card">
       <div className="planting-card-header">

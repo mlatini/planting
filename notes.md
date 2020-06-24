@@ -28,4 +28,10 @@ App
 Seed / Plant - one plant card with an image and a description, which includes how to plant it
 and other stuff. This plant will have a rating. 
 
-2. adding crop to garden creates a new db entry each time.
+- Add to plantings is not working
+<<<<<<< HEAD
+
+
+=======
+  - Renamed plantings to plantingCrops in crops.js and garden.js
+>>>>>>> tsk5
